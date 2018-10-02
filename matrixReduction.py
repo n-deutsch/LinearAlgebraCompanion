@@ -69,14 +69,17 @@ def rowReduce(matrix):
             continue
 
         #now we have a nonzero entry at row[c]
-        for i in range(c,numRows):
+        for i in range(c,numColumns):
             #divide every entry by the leading number so it's "1"
             row[i] = row[i] / row[c]
 
-        
-
+        #leading entry is now one, zero out all rows below this one at "c"
+        for i in range(startRow+1, numRows):
+            rowSubtraction = matrix[i]
+            factor = rowSubtraction[c]
+            for j in range(c,numColumns):
+                rowSubtraction[j] = rowSubtraction[j] - (factor * row[j])
         #next column
-
 
     return solution
 #end rowReduce()

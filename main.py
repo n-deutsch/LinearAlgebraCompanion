@@ -4,20 +4,26 @@ from tkinter import *
 #Global Variables
 master = Tk()
 
+#list of temporary UI elemetns
+UIElements = []
+
 #matrix takes the form list of lists
 matrixA = []
-a_x = 0
-a_y = 0
+a_x = 2
+a_y = 2
+labelA = Label(master, text="")
 
 #matrix takes the form list of lists
 matrixB = []
-b_x = 0
-b_y = 0
+b_x = 2
+b_y = 2
+labelB = Label(master, text="")
 
 #solution set appears here
 solutionMatrix = []
-s_x = 0
-s_y = 0
+s_x = 2
+s_y = 2
+labelS = Label(master, text="")
 
 cellSize = 35
 
@@ -27,6 +33,37 @@ from matrixMultiplication import *
 from matrixAddition import *
 from matrixSubtraction import *
 
+def setGlobals():
+    # set up matrixA
+    global matrixA
+    matrixA = []
+    global a_x
+    a_x = 2
+    global a_y
+    a_y = 2
+
+    # set up matrixB
+    global matrixB
+    matrixB = []
+    global b_x
+    b_x = 2
+    global b_y
+    b_y = 2
+
+    # set up solution matrix
+    global solutionMatrix
+    solutionMatrix = []
+    global s_x
+    s_x = 2
+    global s_y
+    s_y = 2
+
+    global cellSize
+    cellSize = 35
+
+    global UIElements
+    UIElements = []
+# end setGlobals
 
 def modeSwap(x):
     if(x == "Reduction"):
@@ -56,12 +93,19 @@ def UISetup():
     matrixReductionSetup()
 #end UISetup()
 
+def cleanUI():
+    for e in UIElements:
+        e.destroy()
+    clearMatrixA()
+    clearSolutionMatrix()
+#end cleanUI()
+
 def matrixReductionSetup():
     print("setting up matrix reduction...")
 
     #dimensions label...
-    dimensionsLabel = Label(master, text="Dimensions:")
-    dimensionsLabel.place(x=395, y=0, in_=master)
+    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
+    dimensionsLabel.place(x=365, y=0, in_=master)
 
     #dimensions dropdown
     DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
@@ -69,26 +113,26 @@ def matrixReductionSetup():
     rowVar.set("2")
     columnVar = StringVar()
     columnVar.set("2")
-    modeSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    modeSelect.place(x=367, y=20, in_=master)
-    modeSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    modeSelect.place(x=447, y=20, in_=master)
+    rowSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
+    rowSelect.place(x=357, y=20, in_=master)
+    columnSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
+    columnSelect.place(x=437, y=20, in_=master)
 
     #dimensions 'x' label
-    dimensionsLabel = Label(master, text="x")
-    dimensionsLabel.place(x=429, y=25, in_=master)
+    xLabel = Label(master, text="x")
+    xLabel.place(x=417, y=25, in_=master)
 
     #'calculate' button
     solveButton = Button(master, text="Reduce", command=reduceMatrix)
     solveButton.place(x=625, y=690, in_=master)
 
-    #double for loop setup
-    i = 0
-    j = 0
-
-    #matrixA is 2x2 by default
-    a_x = 2
-    a_y = 2
+    #put all these UI elements in a list so they can be removed later...
+    global UIElements
+    UIElements.append(dimensionsLabel)
+    UIElements.append(rowSelect)
+    UIElements.append(columnSelect)
+    UIElements.append(xLabel)
+    UIElements.append(solveButton)
 
     buildMatrixA(a_x, a_y)
     buildSolutionMatrix(a_x, a_y)
@@ -108,6 +152,7 @@ def buildMatrixA(x, y):
     row = []
     # build matrixA...
     for i in range(0, y):
+        row = []
         for j in range(0, x):
             c = Entry(master, width=4)
             # calculate offset...
@@ -118,6 +163,12 @@ def buildMatrixA(x, y):
             row.append(c)
         matrixA.append(row)
     # done building matrixA
+
+    # label signifying input matrix'
+    global labelA
+    labelA = Label(master, text="Matrix A")
+    labelAvertical = 320 - (a_y / 2) * cellSize
+    labelA.place(x=395, y=labelAvertical, in_=master)
 #end buildMatrixA()
 
 def buildSolutionMatrix(x, y):
@@ -132,28 +183,54 @@ def buildSolutionMatrix(x, y):
     row = []
     # build solution matrix...
     for i in range(0, y):
+        row = []
         for j in range(0, x):
             c = Entry(master, width=4)
             # calculate offset...
             cellX = offsetX + cellSize * j
             cellY = offsetY + cellSize * i
             c.place(x=cellX, y=cellY, in_=master)
-            c.insert(0, "0")
+            c.insert(0, "-")
             row.append(c)
         solutionMatrix.append(row)
     # done building solution matrix
+
+    global labelS
+    labelS = Label(master, text="Solution Matrix")
+    labelSvertical = 320 - (a_y / 2) * cellSize
+    labelS.place(x=803, y=labelSvertical, in_=master)
 #end buildSolutionMatrix
 
 def clearMatrixA():
+    #permission to change matrixA
+    global matrixA
+    for r in matrixA:
+        for c in r:
+            c.destroy()
+
+    # destroy "solution matrix" label
+    labelA.destroy()
     matrixA = []
 #end clearMatrixA()
 
 def clearSolutionMatrix():
+    #permission to change solutionMatrix
+    global solutionMatrix
+    # permission to change matrixA
+    for r in solutionMatrix:
+        for c in r:
+            c.destroy()
+
+    #destroy "solution matrix" label
+    labelS.destroy()
     solutionMatrix = []
 #end clearMatrixA()
 
 def rowResizeA(x):
     print("row resize A")
+
+    #global keyword lets us change a_x
+    global a_x
     a_x = int(x)
     clearMatrixA()
     clearSolutionMatrix()
@@ -163,14 +240,32 @@ def rowResizeA(x):
 
 def columnResizeA(y):
     print("column resize A")
+
+    #global keyword lets us change a_y
+    global a_y
     a_y = int(y)
+    clearMatrixA()
+    clearSolutionMatrix()
     buildMatrixA(a_x, a_y)
     buildSolutionMatrix(a_x, a_y)
 #end columnResize()
 
 def reduceMatrix():
     print("REDUCE MATRIX!!!!")
+    #solve matrixA
+    solution = reduce(matrixA, a_x, a_y)
+    #display solution matrix
+    displaySolution(solution, a_x, a_y)
 #end reduceMatrix
+
+def displaySolution(solution, x, y):
+    for i in range (0,x):
+        row = solutionMatrix[i]
+        r = solution[i]
+        for j in range(0,y):
+            row[j].delete(0,100)
+            row[j].insert(0,r[j])
+#end displaySolution()
 
 def matrixSubtractionSetup():
     print("setting up matrix subtraction...")
@@ -188,6 +283,7 @@ def matrixAdditionSetup():
 #end matrixReductionSetup()
 
 def main():
+    setGlobals()
     UISetup()
     mainloop()
 #end main()

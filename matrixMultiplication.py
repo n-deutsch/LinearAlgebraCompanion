@@ -1,6 +1,6 @@
 from util import *
 
 def testMatrixMultiplication():
-    print("testMatrixMultiplication()")
-    print("Matrix multiplication OK")
+    print("testing matrix multiplication...")
+    return True
 #end testMatrixReduction

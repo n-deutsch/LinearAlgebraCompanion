@@ -1,6 +1,6 @@
 from util import *
 
 def testMatrixSubtraction():
-    print("testMatrixSubtraction()")
-    print("Matrix subtraction OK")
+    print("testing matrix subtraction...")
+    return True
 #end testMatrixReduction

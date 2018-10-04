@@ -30,6 +30,16 @@ labelS = Label(master, text="")
 
 cellSize = 35
 
+#THESE VARIABLES REPRESENT LITERAL X PIXEL COORDINATES
+screen33x = 427 #1/3 of the screen
+screen66x = 853 #1/2 of the screen
+
+screen25x = 320 #1/4 of the screen
+screen50x = 640 #1/2 of the screen
+screen75x = 960 #3/4 of the screen
+
+screen50y = 360 #1/2 of the screen
+
 #include other .py files
 from matrixReduction import *
 from matrixMultiplication import *
@@ -69,6 +79,7 @@ def setGlobals():
 # end setGlobals
 
 def modeSwap(x):
+    cleanUI()
     if(x == "Reduction"):
         matrixReductionSetup()
     elif(x == "Multiplication"):
@@ -99,8 +110,9 @@ def UISetup():
 def cleanUI():
     for e in UIElements:
         e.destroy()
-    clearMatrixA()
-    clearSolutionMatrix()
+    clearMatrix(matrixA)
+    clearMatrix(matrixB)
+    clearMatrix(solutionMatrix)
 #end cleanUI()
 
 def matrixReductionSetup():
@@ -137,23 +149,25 @@ def matrixReductionSetup():
     UIElements.append(xLabel)
     UIElements.append(solveButton)
 
-    buildMatrixA(a_x, a_y)
-    buildSolutionMatrix(a_x, a_y)
+    #permission to access global variables
+    global matrixA
+    global solutionMatrix
+
+    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
 
     #print("done!")
 #end matrixReductionSetup()
 
-def buildMatrixA(x, y):
-    #print("building matrix A...")
-    # starting coordinates of matrixA
-    startX = 427
-    startY = 360
+def buildMatrix(x, y, originX, originY):
+    print("building matrix...")
 
-    offsetX = startX - (x / 2 * cellSize)
-    offsetY = startY - (y / 2 * cellSize)
+    m = []
 
-    row = []
-    # build matrixA...
+    offsetX = originX - (x / 2 * cellSize)
+    offsetY = originY - (y / 2 * cellSize)
+
+    # build matrix...
     for i in range(0, y):
         row = []
         for j in range(0, x):
@@ -164,100 +178,50 @@ def buildMatrixA(x, y):
             c.place(x=cellX, y=cellY, in_=master)
             c.insert(0, "0")
             row.append(c)
-        matrixA.append(row)
-    # done building matrixA
+        m.append(row)
+    # done building matrix
+    return m
+#end buildMatrix()
 
-    # label signifying input matrix'
-    global labelA
-    labelA = Label(master, text="Matrix A")
-    labelAvertical = 320 - (a_y / 2) * cellSize
-    labelA.place(x=395, y=labelAvertical, in_=master)
-#end buildMatrixA()
-
-def buildSolutionMatrix(x, y):
-    print("building solution matrix...")
-    # starting coordinates of solution matrix
-    solutionStartX = 853
-    solutionStartY = 360
-
-    offsetX = solutionStartX - (x / 2 * cellSize)
-    offsetY = solutionStartY - (y / 2 * cellSize)
-
-    row = []
-    # build solution matrix...
-    for i in range(0, y):
-        row = []
-        for j in range(0, x):
-            c = Entry(master, width=4)
-            # calculate offset...
-            cellX = offsetX + cellSize * j
-            cellY = offsetY + cellSize * i
-            c.place(x=cellX, y=cellY, in_=master)
-            c.insert(0, "-")
-            row.append(c)
-        solutionMatrix.append(row)
-    # done building solution matrix
-
-    global labelS
-    labelS = Label(master, text="Solution Matrix")
-    labelSvertical = 320 - (a_y / 2) * cellSize
-    labelS.place(x=803, y=labelSvertical, in_=master)
-#end buildSolutionMatrix
-
-def clearMatrixA():
-    #permission to change matrixA
-    global matrixA
-    for r in matrixA:
+def clearMatrix(m):
+    #remove all UI elements in matrix
+    for r in m:
         for c in r:
             c.destroy()
-
-    # destroy "solution matrix" label
-    labelA.destroy()
-    matrixA = []
-#end clearMatrixA()
-
-def clearSolutionMatrix():
-    #permission to change solutionMatrix
-    global solutionMatrix
-    # permission to change matrixA
-    for r in solutionMatrix:
-        for c in r:
-            c.destroy()
-
-    #destroy "solution matrix" label
-    labelS.destroy()
-    solutionMatrix = []
-#end clearMatrixA()
+    #matrix is now an empty list
+    m = []
+#end clearMatrix
 
 def rowResizeA(x):
-    #print("row resize A")
-
-    #global keyword lets us change a_x
+    #global keyword lets us change global variables
+    global matrixA
+    global solutionMatrix
     global a_y
+
     a_y = int(x)
-    clearMatrixA()
-    clearSolutionMatrix()
-    buildMatrixA(a_x, a_y)
-    buildSolutionMatrix(a_x, a_y)
+    clearMatrix(matrixA)
+    clearMatrix(solutionMatrix)
+
+    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
 #end rowResize()
 
 def columnResizeA(y):
-    #print("column resize A")
-
-    #global keyword lets us change a_y
+    #global keyword lets us change global variables
+    global matrixA
+    global solutionMatrix
     global a_x
+
     a_x = int(y)
-    clearMatrixA()
-    clearSolutionMatrix()
-    buildMatrixA(a_x, a_y)
-    buildSolutionMatrix(a_x, a_y)
+    clearMatrix(matrixA)
+    clearMatrix(solutionMatrix)
+
+    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
 #end columnResize()
 
 def reduceMatrix():
-    #print("REDUCE MATRIX!!!!")
-    #solve matrixA
     solution = reduce(matrixA)
-    #display solution matrix
     displaySolution(solution)
 #end reduceMatrix
 
@@ -278,22 +242,16 @@ def displaySolution(solution):
 #end displaySolution()
 
 def matrixSubtractionSetup():
-    #print("setting up matrix subtraction...")
-    #print("done!")
     pass
-#end matrixReductionSetup()
+#end matrixSubtractionSetup()
 
 def matrixMultiplicationSetup():
-    #print("setting up matrix multiplication...")
-    #print("done!")
     pass
-#end matrixReductionSetup()
+#end matrixMultiplicationSetup()
 
 def matrixAdditionSetup():
-    #print("setting up matrix addition...")
-    #print("done!")
     pass
-#end matrixReductionSetup()
+#end matrixAdditionSetup()
 
 def main():
     if (testing == 0):
@@ -305,10 +263,19 @@ def main():
 #end main()
 
 def test():
-    testMatrixReduction()
-    testMatrixSubtraction()
-    testMatrixMultiplication()
-    testMatrixAddition()
+    if (testMatrixReduction() == False):
+        print("Matrix reduction failure")
+        return
+    if (testMatrixSubtraction() == False):
+        print("Matrix subtraction failure")
+        return
+    if (testMatrixMultiplication() == False):
+        print("Matrix multiplcation failure")
+        return
+    if (testMatrixAddition() == False):
+        print("Matrix addition failure")
+        return
+    print("All tests OK!")
 #end test()
 
 #start program

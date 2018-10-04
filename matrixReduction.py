@@ -70,7 +70,7 @@ def rowReduce(matrix):
 #end rowReduce()
 
 def testMatrixReduction():
-    print("testMatrixReduction()")
+    print("testing matrix reduction...")
 
     test1 = [
         [0,3,-6,6,4,-5],
@@ -101,14 +101,15 @@ def testMatrixReduction():
 
     if output == False:
         print("test1 failed!")
-        return
+        return False
 
     test2 = rowReduce(test2)
     output = assertEqual(test2, solution2)
 
     if output == False:
         print("test2 failed!")
-        return
+        return False
 
-    print("Matrix reduction OK!")
+    #print("Matrix reduction OK!")
+    return True
 #end testMatrixReduction

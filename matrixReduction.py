@@ -1,49 +1,18 @@
-def reduce(m, numColumns, numRows):
+from util import *
+
+def reduce(m):
     matrix = copyMatrix(m)
-
     solution = rowReduce(matrix)
-
-    solution = [
-        [1,2],
-        [3,4]
-    ]
-
-    solution = simplify(solution)
-
     return solution
 #end reduce()
 
-def copyMatrix(m):
-    numRows = len(m)
-
-    #is there at least one row??
-    if numRows <= 0:
-        return [] #something went wrong
-
-    numColumns = len(m[0])
-    matrix = []
-
-    for i in range(0, numRows):
-        r = m[i]
-        row = []
-        for j in range(0, numColumns):
-            val = r[j].get()
-            val = float(val)
-            row.append(val)
-        matrix.append(row)
-
-    butts = 69
-
-    return matrix
-#end copyMatrix
-
+#converts a matrix to echelon form
 def rowReduce(matrix):
-    solution = []
     numRows = len(matrix)
 
     #don't process if it's empty
     if numRows <= 0:
-        return solution
+        return matrix
 
     #every row has the same length because it's a matrix
     numColumns = len(matrix[0])
@@ -55,6 +24,8 @@ def rowReduce(matrix):
     for c in range (0, numReductions):
         #find a row with some nonzero entry at index 'c'
         row = matrix[startRow]
+
+        #ensure row[c] is nonzero
         if row[c] == 0:
             #find some row that doesn't have a zero in column 'c'
             for r in range(startRow, numRows):
@@ -63,27 +34,81 @@ def rowReduce(matrix):
                     matrix[r] = matrix[startRow]
                     matrix[startRow] = tempRow
                     row = matrix[startRow]
+                    break
 
         #is row[c] STILL zero?? ignore this column 'c'
         if row[c] == 0:
             continue
-
         #now we have a nonzero entry at row[c]
+
+        #grab the value in column c
+        factor = row[c]
         for i in range(c,numColumns):
-            #divide every entry by the leading number so it's "1"
-            row[i] = row[i] / row[c]
+            #divide every entry by the leading number so r[c] has value of "1"
+            row[i] = row[i] / factor
 
         #leading entry is now one, zero out all rows below this one at "c"
-        for i in range(startRow+1, numRows):
+        for i in range(0, numRows):
+            #skip the current row
+            if i == startRow:
+                continue
+
             rowSubtraction = matrix[i]
             factor = rowSubtraction[c]
             for j in range(c,numColumns):
                 rowSubtraction[j] = rowSubtraction[j] - (factor * row[j])
-        #next column
+        startRow = startRow + 1 #shrink submatrix!
+        #master loop!
 
-    return solution
+    #round all values to 3 decimal places, otherwise we get lots of 0.0000000001 values
+    for r in range(0, numRows):
+        row = matrix[r]
+        for j in range(0, numColumns):
+            row[j] = round(row[j],3)
+
+    return matrix
 #end rowReduce()
 
-def simplify(matrix):
-    return matrix
-#end simplify()
+def testMatrixReduction():
+    print("testMatrixReduction()")
+
+    test1 = [
+        [0,3,-6,6,4,-5],
+        [3,-7,8,-5,8,9],
+        [3,-9,12,-9,6,15]
+    ]
+
+    solution1 = [
+        [1,0,-2,3,0,-24],
+        [0,1,-2,2,0,-7],
+        [0,0,0,0,1,4]
+    ]
+
+    test2 = [
+        [1,2,1,1,7],
+        [1,2,2,-1,12],
+        [2,4,0,6,4]
+    ]
+
+    solution2 = [
+        [1,2,0,3,2],
+        [0,0,1,-2,5],
+        [0,0,0,0,0]
+    ]
+
+    test1 = rowReduce(test1)
+    output = assertEqual(test1, solution1)
+
+    if output == False:
+        print("test1 failed!")
+        return
+
+    test2 = rowReduce(test2)
+    output = assertEqual(test2, solution2)
+
+    if output == False:
+        print("test2 failed!")
+        return
+
+    print("Matrix reduction OK!")
+#end testMatrixReduction

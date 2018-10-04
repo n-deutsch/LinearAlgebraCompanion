@@ -4,6 +4,9 @@ from tkinter import *
 #Global Variables
 master = Tk()
 
+#variable that decides if we run tests or not. 0 means testing is enabled
+testing = 0
+
 #list of temporary UI elemetns
 UIElements = []
 
@@ -101,7 +104,7 @@ def cleanUI():
 #end cleanUI()
 
 def matrixReductionSetup():
-    print("setting up matrix reduction...")
+    #print("setting up matrix reduction...")
 
     #dimensions label...
     dimensionsLabel = Label(master, text="Matrix A Dimensions:")
@@ -137,11 +140,11 @@ def matrixReductionSetup():
     buildMatrixA(a_x, a_y)
     buildSolutionMatrix(a_x, a_y)
 
-    print("done!")
+    #print("done!")
 #end matrixReductionSetup()
 
 def buildMatrixA(x, y):
-    print("building matrix A...")
+    #print("building matrix A...")
     # starting coordinates of matrixA
     startX = 427
     startY = 360
@@ -227,11 +230,11 @@ def clearSolutionMatrix():
 #end clearMatrixA()
 
 def rowResizeA(x):
-    print("row resize A")
+    #print("row resize A")
 
     #global keyword lets us change a_x
-    global a_x
-    a_x = int(x)
+    global a_y
+    a_y = int(x)
     clearMatrixA()
     clearSolutionMatrix()
     buildMatrixA(a_x, a_y)
@@ -239,11 +242,11 @@ def rowResizeA(x):
 #end rowResize()
 
 def columnResizeA(y):
-    print("column resize A")
+    #print("column resize A")
 
     #global keyword lets us change a_y
-    global a_y
-    a_y = int(y)
+    global a_x
+    a_x = int(y)
     clearMatrixA()
     clearSolutionMatrix()
     buildMatrixA(a_x, a_y)
@@ -251,42 +254,62 @@ def columnResizeA(y):
 #end columnResize()
 
 def reduceMatrix():
-    print("REDUCE MATRIX!!!!")
+    #print("REDUCE MATRIX!!!!")
     #solve matrixA
-    solution = reduce(matrixA, a_x, a_y)
+    solution = reduce(matrixA)
     #display solution matrix
-    displaySolution(solution, a_x, a_y)
+    displaySolution(solution)
 #end reduceMatrix
 
-def displaySolution(solution, x, y):
-    for i in range (0,x):
+def displaySolution(solution):
+    numRows = len(solution)
+
+    if(numRows <= 0):
+        return
+
+    numColumns = len(solution[0])
+
+    for i in range (0,numRows):
         row = solutionMatrix[i]
         r = solution[i]
-        for j in range(0,y):
+        for j in range(0,numColumns):
             row[j].delete(0,100)
             row[j].insert(0,r[j])
 #end displaySolution()
 
 def matrixSubtractionSetup():
-    print("setting up matrix subtraction...")
-    print("done!")
+    #print("setting up matrix subtraction...")
+    #print("done!")
+    pass
 #end matrixReductionSetup()
 
 def matrixMultiplicationSetup():
-    print("setting up matrix multiplication...")
-    print("done!")
+    #print("setting up matrix multiplication...")
+    #print("done!")
+    pass
 #end matrixReductionSetup()
 
 def matrixAdditionSetup():
-    print("setting up matrix addition...")
-    print("done!")
+    #print("setting up matrix addition...")
+    #print("done!")
+    pass
 #end matrixReductionSetup()
 
 def main():
+    if (testing == 0):
+        test()
+
     setGlobals()
     UISetup()
     mainloop()
 #end main()
+
+def test():
+    testMatrixReduction()
+    testMatrixSubtraction()
+    testMatrixMultiplication()
+    testMatrixAddition()
+#end test()
 
 #start program
 main()

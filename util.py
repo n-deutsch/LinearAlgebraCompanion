@@ -17,8 +17,6 @@ def copyMatrix(m):
             row.append(val)
         matrix.append(row)
 
-    butts = 69
-
     return matrix
 #end copyMatrix
 

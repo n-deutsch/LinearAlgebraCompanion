@@ -91,8 +91,8 @@ def modeSwap(x):
 #end modeSwap()
 
 def UISetup():
-    master.minsize(1280, 720)
-    master.geometry("1280x720")
+    master.minsize(640, 480)
+    master.geometry("640x480")
 
     modeLabel = Label(master, text="Mode:")
     modeLabel.place(x=0, y=5, in_=master)

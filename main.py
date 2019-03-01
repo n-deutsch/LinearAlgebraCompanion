@@ -1,13 +1,33 @@
 # Library for GUI
 from tkinter import *
 
+# Include other .py files
+from test import *
+from matrixReduction import *
+from matrixMultiplication import *
+from matrixAddition import *
+from matrixSubtraction import *
+
 # Global Variables
 master = Tk()
 
-# variable that decides if we run tests or not. 0 means testing is enabled
-testing = 0
+# variable that decides if we run tests or not
+testing = True
 
-# List of temporary UI elemetns
+# screen resolution variables...
+screenWidth = 640
+screenHeight = 480
+
+screen33x = screenWidth/3  # 1/3 of the screen
+screen66x = (screenWidth/3) * 2  # 2/3 of the screen
+
+screen25x = screenWidth/4  # 1/4 of the screen
+screen50x = screenWidth/2  # 1/2 of the screen
+screen75x = (screenWidth/4) * 3  # 3/4 of the screen
+
+screen50y = screenHeight/2  # 1/2 of the screen
+
+# List of temporary UI elements
 UIElements = []
 
 # Matrix takes the form list of lists
@@ -28,24 +48,7 @@ s_x = 2
 s_y = 2
 labelS = Label(master, text="")
 
-cellSize = 35
-
-# THESE VARIABLES REPRESENT LITERAL X PIXEL COORDINATES
-screen33x = 427 #1/3 of the screen
-screen66x = 853 #1/2 of the screen
-
-screen25x = 320 #1/4 of the screen
-screen50x = 640 #1/2 of the screen
-screen75x = 960 #3/4 of the screen
-
-screen50y = 360 #1/2 of the screen
-
-# Include other .py files
-from test import *
-from matrixReduction import *
-from matrixMultiplication import *
-from matrixAddition import *
-from matrixSubtraction import *
+cellSize = 30
 
 
 def setGlobals():
@@ -73,34 +76,31 @@ def setGlobals():
     global s_y
     s_y = 2
 
-    global cellSize
-    cellSize = 35
-
     global UIElements
     UIElements = []
 # end setGlobals
 
 def modeSwap(x):
     cleanUI()
-    if(x == "Reduction"):
+    if x == "Reduction":
         matrixReductionSetup()
-    elif(x == "Multiplication"):
+    elif x == "Multiplication":
         matrixMultiplicationSetup()
-    elif(x == "Addition"):
+    elif x == "Addition":
         matrixAdditionSetup()
-    elif(x == "Subtraction"):
+    elif x == "Subtraction":
         matrixSubtractionSetup()
 # end modeSwap()
 
 
 def UISetup():
-    master.minsize(640, 480)
+    master.minsize(screenWidth, screenHeight)
     master.geometry("640x480")
 
     modeLabel = Label(master, text="Mode:")
     modeLabel.place(x=0, y=5, in_=master)
 
-    MODES = ["Reduction","Multiplication","Addition","Subtraction"]
+    MODES = ["Reduction", "Multiplication", "Addition", "Subtraction"]
     modeVar = StringVar()
     modeVar.set("Reduction")
     modeSelect = OptionMenu(master, modeVar, *MODES, command=modeSwap)
@@ -244,12 +244,12 @@ def displaySolution(solution):
 
     numColumns = len(solution[0])
 
-    for i in range (0,numRows):
+    for i in range (0, numRows):
         row = solutionMatrix[i]
         r = solution[i]
-        for j in range(0,numColumns):
-            row[j].delete(0,100)
-            row[j].insert(0,r[j])
+        for j in range(0, numColumns):
+            row[j].delete(0, 100)
+            row[j].insert(0, r[j])
 # end displaySolution()
 
 
@@ -269,7 +269,7 @@ def matrixAdditionSetup():
 
 
 def main():
-    if (testing == 0):
+    if testing:
         test()
 
     setGlobals()

@@ -44,6 +44,21 @@ def assertEqual(matrix1, matrix2):
         for c in range(0,numColumns):
             if r1[c] != r2[c]:
                 return False
-
     return True
 #end assertEqual()
+
+# round all values to 3 decimal places, otherwise we get lots of 0.0000000001 values
+def roundDecimals(matrix, numDecimalPlaces):
+    numRows = len(matrix)
+
+    if numRows > 0:
+        numColumns = len(matrix[0])
+    else:
+        numColumns = 0
+
+    for r in matrix:
+        for c in range(0, numColumns):
+            r[c] = round(r[c], numDecimalPlaces)
+
+    return matrix
+# end roundDecimals()

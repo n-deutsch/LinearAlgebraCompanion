@@ -15,7 +15,7 @@ master = Tk()
 testing = True
 
 # screen resolution variables...
-screenWidth = 640
+screenWidth = 800
 screenHeight = 480
 
 screen33x = screenWidth/3  # 1/3 of the screen
@@ -95,7 +95,7 @@ def modeSwap(x):
 
 def UISetup():
     master.minsize(screenWidth, screenHeight)
-    master.geometry("640x480")
+    master.geometry("800x480")
 
     modeLabel = Label(master, text="Mode:")
     modeLabel.place(x=0, y=5, in_=master)
@@ -123,28 +123,30 @@ def cleanUI():
 def matrixReductionSetup():
     # print("setting up matrix reduction...")
 
-    # dimensions label...
-    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel.place(x=365, y=0, in_=master)
-
     # dimensions dropdown
-    DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     rowVar = StringVar()
     rowVar.set("2")
     columnVar = StringVar()
     columnVar.set("2")
+
     rowSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect.place(x=357, y=20, in_=master)
+    rowSelect.place(x=138, y=450, in_=master)
+
     columnSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect.place(x=437, y=20, in_=master)
+    columnSelect.place(x=208, y=450, in_=master)
+
+    # dimensions label...
+    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
+    dimensionsLabel.place(x=142, y=435, in_=master)
 
     # dimensions 'x' label
     xLabel = Label(master, text="x")
-    xLabel.place(x=417, y=25, in_=master)
+    xLabel.place(x=194, y=455, in_=master)
 
-    # 'calculate' button
+    # 'Reduce' button
     solveButton = Button(master, text="Reduce", command=reduceMatrix)
-    solveButton.place(x=625, y=690, in_=master)
+    solveButton.place(x=375, y=450, in_=master)
 
     # put all these UI elements in a list so they can be removed later...
     global UIElements
@@ -158,8 +160,8 @@ def matrixReductionSetup():
     global matrixA
     global solutionMatrix
 
-    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
+    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
 
     # print("done!")
 # end matrixReductionSetup()
@@ -210,8 +212,8 @@ def rowResizeA(x):
     clearMatrix(matrixA)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
+    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
 # end rowResize()
 
 
@@ -225,8 +227,8 @@ def columnResizeA(y):
     clearMatrix(matrixA)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(a_x, a_y, screen33x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen66x, screen50y)
+    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
+    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
 # end columnResize()
 
 

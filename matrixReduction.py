@@ -62,8 +62,7 @@ def rowReduce(matrix):
         submatrixRow = submatrixRow + 1  # shrink submatrix!
         # end master loop!
 
-
-    #round to three decimal places
+    # round to three decimal places
     matrix = roundDecimals(matrix, 3)
 
     return matrix

@@ -1,6 +1,5 @@
 from util import *
 
-def testMatrixSubtraction():
-    print("testing matrix subtraction...")
-    return True
-#end testMatrixReduction
+def subtract(matrix_a, matrix_b):
+    pass
+# end subtract()

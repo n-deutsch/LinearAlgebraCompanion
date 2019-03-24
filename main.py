@@ -15,8 +15,8 @@ master = Tk()
 testing = True
 
 # screen resolution variables...
-screenWidth = 800
-screenHeight = 480
+screenWidth = 1200
+screenHeight = 580
 
 screen33x = screenWidth/3  # 1/3 of the screen
 screen66x = (screenWidth/3) * 2  # 2/3 of the screen
@@ -24,6 +24,9 @@ screen66x = (screenWidth/3) * 2  # 2/3 of the screen
 screen25x = screenWidth/4  # 1/4 of the screen
 screen50x = screenWidth/2  # 1/2 of the screen
 screen75x = (screenWidth/4) * 3  # 3/4 of the screen
+
+screen16x = screenWidth/6  # 16.6% of the screen
+screen83x = (screenWidth/6) * 5  # 83.3% of the screen
 
 screen50y = screenHeight/2  # 1/2 of the screen
 
@@ -95,7 +98,7 @@ def modeSwap(x):
 
 def UISetup():
     master.minsize(screenWidth, screenHeight)
-    master.geometry("800x480")
+    master.geometry("1200x580")
 
     modeLabel = Label(master, text="Mode:")
     modeLabel.place(x=0, y=5, in_=master)
@@ -131,22 +134,26 @@ def matrixReductionSetup():
     columnVar.set("2")
 
     rowSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect.place(x=138, y=450, in_=master)
+    rowSelect.place(x=(screen25x - 55), y=550, in_=master)
 
     columnSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect.place(x=208, y=450, in_=master)
-
-    # dimensions label...
-    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel.place(x=142, y=435, in_=master)
+    columnSelect.place(x=(screen25x + 5), y=550, in_=master)
 
     # dimensions 'x' label
     xLabel = Label(master, text="x")
-    xLabel.place(x=194, y=455, in_=master)
+    xLabel.place(x=(screen25x - 5), y=555, in_=master)
+
+    # dimensions label...
+    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
+    dimensionsLabel.place(x=(screen25x - 55), y=535, in_=master)
+
+    # solution label...
+    solutionLabel = Label(master, text="Solution matrix")
+    solutionLabel.place(x=(screen75x - 50), y=535, in_=master)
 
     # 'Reduce' button
     solveButton = Button(master, text="Reduce", command=reduceMatrix)
-    solveButton.place(x=375, y=450, in_=master)
+    solveButton.place(x=(screen50x - 25), y=550, in_=master)
 
     # put all these UI elements in a list so they can be removed later...
     global UIElements
@@ -168,7 +175,7 @@ def matrixReductionSetup():
 
 
 def buildMatrix(x, y, originX, originY):
-    print("building matrix...")
+    # print("building matrix...")
 
     m = []
 
@@ -261,6 +268,10 @@ def matrixSubtractionSetup():
 
 
 def matrixMultiplicationSetup():
+    print("SETTING UP MATRIX REDUCTION!!!!!")
+
+    # build matrix A, B, and solution matrix.
+
     pass
 # end matrixMultiplicationSetup()
 

@@ -1,6 +1,8 @@
 # test.py handles unit and integration tests
 from matrixReduction import *
 from matrixMultiplication import *
+from matrixSubtraction import *
+from matrixAddition import *
 
 def integrationTest():
     if not testMatrixReduction():
@@ -140,10 +142,190 @@ def testMatrixReduction():
 # end testMatrixReduction()
 
 def testMatrixAddition():
+    print("testing matrix addition...")
+
+    # test case 1: regular 2x2 matricies
+    test1_a = [
+        [1, 2],
+        [3, 4]
+    ]
+
+    test1_b = [
+        [5, 6],
+        [7, 8]
+    ]
+
+    solution1 = [
+        [6, 8],
+        [10, 12]
+    ]
+
+    # test case 2 - invalid dimensions
+    test2_a = [
+        [1, 1, 1],
+        [1, 1, 1],
+        [0, 0, 0],
+    ]
+
+    test2_b = [
+        [0, 1],
+        [0, 1]
+    ]
+
+    solution2 = []
+
+    # test case 3 - zero matrix
+    test3_a = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    test3_b = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    solution3 = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    test4_a = [
+        [-1, -1, -1],
+        [-2, -2, -2],
+        [3, 3, 3]
+    ]
+
+    test4_b = [
+        [1, 1, 1],
+        [2, 2, 2],
+        [-3, -3, -3]
+    ]
+
+    solution4 = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+    ]
+
+    test1 = add(test1_a, test1_b)
+    output = assertEqual(test1, solution1)
+    if not output:
+        print("test1 failed")
+        return False
+
+    test2 = add(test2_a, test2_b)
+    output = assertEqual(test2, solution2)
+    if not output:
+        print("test2 failed")
+        return False
+
+    test3 = add(test3_a, test3_b)
+    output = assertEqual(test3, solution3)
+    if not output:
+        print("test3 failed")
+        return False
+
+    test4 = add(test4_a, test4_b)
+    output = assertEqual(test4, solution4)
+    if not output:
+        print("test4 failed")
+        return False
+
     return True
 # end testMatrixAddition()
 
 def testMatrixSubtraction():
+    print("testing matrix subtraction...")
+
+    # test case 1: regular 2x2 matricies
+    test1_a = [
+        [1, 2],
+        [3, 4]
+    ]
+
+    test1_b = [
+        [5, 6],
+        [7, 8]
+    ]
+
+    solution1 = [
+        [-4, -4],
+        [-4, -4]
+    ]
+
+    # test case 2 - invalid dimensions
+    test2_a = [
+        [1, 1, 1],
+        [1, 1, 1],
+        [0, 0, 0],
+    ]
+
+    test2_b = [
+        [0, 1],
+        [0, 1]
+    ]
+
+    solution2 = []
+
+    # test case 3 - zero matrix
+    test3_a = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    test3_b = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    solution3 = [
+        [0, 0],
+        [0, 0]
+    ]
+
+    test4_a = [
+        [-1, -1, -1],
+        [-2, -2, -2],
+        [3, 3, 3]
+    ]
+
+    test4_b = [
+        [1, 1, 1],
+        [2, 2, 2],
+        [-3, -3, -3]
+    ]
+
+    solution4 = [
+        [-2, -2, -2],
+        [-4, -4, -4],
+        [6, 6, 6]
+    ]
+
+    test1 = subtract(test1_a, test1_b)
+    output = assertEqual(test1, solution1)
+    if not output:
+        print("test1 failed")
+        return False
+
+    test2 = subtract(test2_a, test2_b)
+    output = assertEqual(test2, solution2)
+    if not output:
+        print("test2 failed")
+        return False
+
+    test3 = subtract(test3_a, test3_b)
+    output = assertEqual(test3, solution3)
+    if not output:
+        print("test3 failed")
+        return False
+
+    test4 = subtract(test4_a, test4_b)
+    output = assertEqual(test4, solution4)
+    if not output:
+        print("test4 failed")
+        return False
+
     return True
 # end testMatrixSubtraction()
 
@@ -245,31 +427,31 @@ def testMatrixMultiplication():
         [10351, 1703, 9841, 7138, 3241, 13604, 12934, 6964]
     ]
 
-    test1 = multiply(test1_a, test1_b)
+    test1 = matrixMultiplication(test1_a, test1_b)
     output = assertEqual(test1, solution1)
     if not output:
         print("test1 failed")
         return False
 
-    test2 = multiply(test2_a, test2_b)
+    test2 = matrixMultiplication(test2_a, test2_b)
     output = assertEqual(test2, solution2)
     if not output:
         print("test2 failed")
         return False
 
-    test3 = multiply(test3_a, test3_b)
+    test3 = matrixMultiplication(test3_a, test3_b)
     output = assertEqual(test3, solution3)
     if not output:
         print("test3 failed")
         return False
 
-    test4 = multiply(test4_a, test4_b)
+    test4 = matrixMultiplication(test4_a, test4_b)
     output = assertEqual(test4, solution4)
     if not output:
         print("test4 failed")
         return False
 
-    test5 = multiply(test5_a, test5_b)
+    test5 = matrixMultiplication(test5_a, test5_b)
     output = assertEqual(test5, solution5)
     if not output:
         print("test5 failed")

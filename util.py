@@ -8,7 +8,7 @@ def copyMatrix(m):
     numColumns = len(m[0])
     matrix = []
 
-    for i in range(0, numRows):
+    for i in range(numRows):
         r = m[i]
         row = []
         for j in range(0, numColumns):
@@ -62,6 +62,30 @@ def roundDecimals(matrix, numDecimalPlaces):
 
     return matrix
 # end roundDecimals()
+
+# returns TRUE if a has the same # of columns and rows as b
+def check_equal_dimensions(matrix_a, matrix_b):
+    # get A's dimensions
+    rows_a = len(matrix_a)
+    if rows_a > 0:
+        cols_a = len(matrix_a[0])
+    else:
+        cols_a = 0
+
+    # get B's dimensions
+    rows_b = len(matrix_b)
+    if rows_b > 0:
+        cols_b = len(matrix_b[0])
+    else:
+        cols_b = 0
+
+    if rows_a != rows_b:
+        return False
+    if cols_a != cols_b:
+        return False
+
+    return True
+# end check_equal_dimensions()
 
 
 

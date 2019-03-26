@@ -14,6 +14,9 @@ master = Tk()
 # variable that decides if we run tests or not
 testing = True
 
+# "Dimensions" dropdown values
+DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
 # screen resolution variables...
 screenWidth = 1200
 screenHeight = 580
@@ -53,6 +56,8 @@ labelS = Label(master, text="")
 
 cellSize = 30
 
+mode = "Reduction"
+
 
 def setGlobals():
     # set up matrixA
@@ -83,8 +88,29 @@ def setGlobals():
     UIElements = []
 # end setGlobals
 
+def reset_matricies():
+    global a_x
+    global a_y
+    global b_x
+    global b_y
+    global s_x
+    global s_y
+    a_x = a_y = b_x = b_y = s_x = s_y = 2
+
+    global matrixA
+    global matrixB
+    global solutionMatrix
+
+    matrixA = matrixB = solutionMatrix = []
+# end set_default_matrix_dimensions()
+
 def modeSwap(x):
+    global mode
+    mode = x
+
     cleanUI()
+    reset_matricies()
+
     if x == "Reduction":
         matrixReductionSetup()
     elif x == "Multiplication":
@@ -93,6 +119,8 @@ def modeSwap(x):
         matrixAdditionSetup()
     elif x == "Subtraction":
         matrixSubtractionSetup()
+
+    # print("mode : ", mode)
 # end modeSwap()
 
 
@@ -249,13 +277,14 @@ def matrixSubtractionSetup():
 # end matrixSubtractionSetup()
 
 
-def matrixMultiplicationSetup():
-    print("SETTING UP MATRIX MULTIPLICATION!!!!!")
+def matrixAdditionSetup():
+    pass
+# end matrixAdditionSetup()
 
+
+def matrixMultiplicationSetup():
     # build matrix A, B, and solution matrix.
 
-    # dimensions dropdown
-    DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     rowVar = StringVar()
     rowVar.set("2")
     columnVar = StringVar()
@@ -263,42 +292,42 @@ def matrixMultiplicationSetup():
 
     # MATRIX A
     rowSelect_a = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect_a.place(x=(screen16x - 55), y=550, in_=master)
+    rowSelect_a.place(x=(screen16x - 60), y=500, in_=master)
 
     columnSelect_a = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect_a.place(x=(screen16x + 5), y=550, in_=master)
+    columnSelect_a.place(x=(screen16x + 5), y=500, in_=master)
 
     # dimensions 'x' label for matrix a
     xLabel_a = Label(master, text="x")
-    xLabel_a.place(x=(screen16x - 5), y=555, in_=master)
+    xLabel_a.place(x=(screen16x - 5), y=504, in_=master)
 
     # dimensions label...
     dimensionsLabel_a = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel_a.place(x=(screen16x - 55), y=535, in_=master)
+    dimensionsLabel_a.place(x=(screen16x - 55), y=480, in_=master)
 
     # MATRIX B
     rowSelect_b = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeB)
-    rowSelect_b.place(x=(screen50x - 20), y=550, in_=master)
+    rowSelect_b.place(x=(screen50x - 60), y=500, in_=master)
 
     columnSelect_b = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeB)
-    columnSelect_b.place(x=(screen50x + 20), y=550, in_=master)
+    columnSelect_b.place(x=(screen50x + 5), y=500, in_=master)
 
     # dimensions 'x' label for matrix b
     xLabel_b = Label(master, text="x")
-    xLabel_b.place(x=screen50x, y=555, in_=master)
+    xLabel_b.place(x=screen50x -5, y=504, in_=master)
 
     # dimensions label...
     dimensionsLabel_b = Label(master, text="Matrix B Dimensions:")
-    dimensionsLabel_b.place(x=(screen50x), y=535, in_=master)
+    dimensionsLabel_b.place(x=(screen50x - 55), y=480, in_=master)
 
-    #SOLUTION ELEMENTS
+    # SOLUTION ELEMENTS
     # solution label...
     solutionLabel = Label(master, text="Solution matrix")
-    solutionLabel.place(x=(screen83x - 50), y=535, in_=master)
+    solutionLabel.place(x=(screen83x - 50), y=480, in_=master)
 
-    # 'Reduce' button
+    # 'multiply' button
     solveButton = Button(master, text="Multiply", command=multiplyMatrix)
-    solveButton.place(x=(screen50x - 25), y=0, in_=master)
+    solveButton.place(x=(screen50x + 200), y=502, in_=master)
 
     # put all these UI elements in a list so they can be removed later...
     global UIElements
@@ -310,6 +339,7 @@ def matrixMultiplicationSetup():
     UIElements.append(rowSelect_b)
     UIElements.append(columnSelect_b)
     UIElements.append(xLabel_b)
+    UIElements.append(solutionLabel)
     UIElements.append(solveButton)
 
     # permission to access global variables
@@ -323,42 +353,35 @@ def matrixMultiplicationSetup():
 # end matrixMultiplicationSetup()
 
 
-def matrixAdditionSetup():
-    pass
-# end matrixAdditionSetup()
-
-
 def matrixReductionSetup():
     # print("setting up matrix reduction...")
 
-    # dimensions dropdown
-    DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     rowVar = StringVar()
     rowVar.set("2")
     columnVar = StringVar()
     columnVar.set("2")
 
     rowSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect.place(x=(screen25x - 55), y=550, in_=master)
+    rowSelect.place(x=(screen25x - 65), y=500, in_=master)
 
     columnSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect.place(x=(screen25x + 5), y=550, in_=master)
+    columnSelect.place(x=(screen25x + 10), y=500, in_=master)
 
     # dimensions 'x' label
     xLabel = Label(master, text="x")
-    xLabel.place(x=(screen25x - 5), y=555, in_=master)
+    xLabel.place(x=(screen25x - 8), y=504, in_=master)
 
     # dimensions label...
     dimensionsLabel = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel.place(x=(screen25x - 55), y=535, in_=master)
+    dimensionsLabel.place(x=(screen25x - 60), y=480, in_=master)
 
     # solution label...
     solutionLabel = Label(master, text="Solution matrix")
-    solutionLabel.place(x=(screen75x - 50), y=535, in_=master)
+    solutionLabel.place(x=(screen75x - 50), y=480, in_=master)
 
     # 'Reduce' button
     solveButton = Button(master, text="Reduce", command=reduceMatrix)
-    solveButton.place(x=(screen50x - 25), y=0, in_=master)
+    solveButton.place(x=(screen50x - 25), y=502, in_=master)
 
     # put all these UI elements in a list so they can be removed later...
     global UIElements
@@ -366,6 +389,7 @@ def matrixReductionSetup():
     UIElements.append(rowSelect)
     UIElements.append(columnSelect)
     UIElements.append(xLabel)
+    UIElements.append(solutionLabel)
     UIElements.append(solveButton)
 
     # permission to access global variables
@@ -374,9 +398,9 @@ def matrixReductionSetup():
 
     matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
     solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
-
     # print("done!")
 # end matrixReductionSetup()
+
 
 def main():
     if testing:
@@ -384,6 +408,9 @@ def main():
 
     setGlobals()
     UISetup()
+
+    # modeSwap("Multiplication")
+
     mainloop()
 # end main()
 

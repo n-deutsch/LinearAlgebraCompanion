@@ -1,16 +1,20 @@
 from util import *
 
-def multiply(matrix_a, matrix_b):
+
+def multiply(m_a, m_b):
+    matrix_a = copyMatrix(m_a)
+    matrix_b = copyMatrix(m_b)
+
+    solution = matrixMultiplication(matrix_a, matrix_b)
+    return solution
+# end matrixMultiply()
+
+def matrixMultiplication(matrix_a, matrix_b):
     # ensure matrix_a has the same number of columns as matrix_b has rows
-    if not check_dimensions(matrix_a, matrix_b):
+    if not check_dimensions_multiplication(matrix_a, matrix_b):
         return []
 
     solution = []
-    solution_row = []
-
-    row_a = []
-    row_b = []
-    col_b = []
 
     num_rows_a = len(matrix_a)
     num_rows_b = len(matrix_b)
@@ -36,7 +40,7 @@ def multiply(matrix_a, matrix_b):
 # end multiply()
 
 # checkDimensions return TRUE if matrix A has the same number of columns as matrix B has rows
-def check_dimensions(matrix_a, matrix_b):
+def check_dimensions_multiplication(matrix_a, matrix_b):
     # get number of columns in matrix a
     rows_a = len(matrix_a)
     if rows_a == 0:

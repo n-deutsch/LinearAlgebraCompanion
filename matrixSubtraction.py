@@ -1,8 +1,18 @@
 from util import *
 
+
+def subtract(m_a, m_b):
+    matrix_a = copyMatrix(m_a)
+    matrix_b = copyMatrix(m_b)
+
+    solution = matrixSubtraction(matrix_a, matrix_b)
+    return solution
+# end subtract()
+
+
 # returns the difference between two matricies
-def subtract(matrix_a, matrix_b):
-    if not check_equal_dimensions(matrix_a, matrix_b):
+def matrixSubtraction(matrix_a, matrix_b):
+    if not checkEqualDimensions(matrix_a, matrix_b):
         return []
 
     solution = []
@@ -18,4 +28,6 @@ def subtract(matrix_a, matrix_b):
         solution.append(solution_row)
 
     return solution
-# end subtract()
+# end matrixSubtraction()
+
+

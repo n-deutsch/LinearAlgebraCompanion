@@ -18,20 +18,17 @@ testing = True
 DIMENSIONS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 # screen resolution variables...
-screenWidth = 1200
-screenHeight = 580
+screenWidth = 1000
+screenHeight = 500
 
-screen33x = screenWidth/3  # 1/3 of the screen
-screen66x = (screenWidth/3) * 2  # 2/3 of the screen
+originA_x = 0
+originA_y = 100
 
-screen25x = screenWidth/4  # 1/4 of the screen
-screen50x = screenWidth/2  # 1/2 of the screen
-screen75x = (screenWidth/4) * 3  # 3/4 of the screen
+originB_x = 350
+originB_y = 100
 
-screen16x = screenWidth/6  # 16.6% of the screen
-screen83x = (screenWidth/6) * 5  # 83.3% of the screen
-
-screen50y = screenHeight/2  # 1/2 of the screen
+originS_x = 700
+originS_y = 100
 
 # List of temporary UI elements
 UIElements = []
@@ -54,10 +51,21 @@ s_x = 2
 s_y = 2
 labelS = Label(master, text="")
 
+rowA = StringVar()
+colA = StringVar()
+
+rowB = StringVar()
+colB = StringVar()
+
+rowSelectA = OptionMenu(master, rowA, *DIMENSIONS)
+colSelectA = OptionMenu(master, colA, *DIMENSIONS)
+
+rowSelectB = OptionMenu(master, rowB, *DIMENSIONS)
+colSelectB = OptionMenu(master, colB, *DIMENSIONS)
+
 cellSize = 30
 
 mode = "Reduction"
-
 
 def setGlobals():
     # set up matrixA
@@ -84,6 +92,16 @@ def setGlobals():
     global s_y
     s_y = 2
 
+    global rowA
+    rowA.set("2")
+    global colA
+    colA.set("2")
+
+    global rowB
+    rowB.set("2")
+    global colB
+    colB.set("2")
+
     global UIElements
     UIElements = []
 # end setGlobals
@@ -108,8 +126,8 @@ def modeSwap(x):
     global mode
     mode = x
 
-    cleanUI()
-    reset_matricies()
+    # cleanUI()
+    # reset_matricies()
 
     if x == "Reduction":
         matrixReductionSetup()
@@ -126,7 +144,7 @@ def modeSwap(x):
 
 def UISetup():
     master.minsize(screenWidth, screenHeight)
-    master.geometry("1200x580")
+    master.geometry("1000x500")
 
     modeLabel = Label(master, text="Mode:")
     modeLabel.place(x=0, y=5, in_=master)
@@ -138,13 +156,53 @@ def UISetup():
 
     modeSelect.place(x=38, y=0, in_=master)
 
+    aLabel = Label(master, text="Matrix A:")
+    aLabel.place(x=-3, y=80, in_=master)
+
+    bLabel = Label(master, text="Matrix B:")
+    bLabel.place(x=347, y=80, in_=master)
+
+    sLabel = Label(master, text="Solution Matrix:")
+    sLabel.place(x=697, y=80, in_=master)
+
+    solveButton = Button(master, text="Solve", command=solveMatrix)
+    solveButton.place(x=700, y=405, in_=master)
+
+    aRowLabel = Label(master, text="A rows: ")
+    aRowLabel.place(x=0, y=410)
+
+    aColLabel = Label(master, text="A columns: ")
+    aColLabel.place(x=0, y=437)
+
+    global rowSelectA
+    rowSelectA = OptionMenu(master, rowA, *DIMENSIONS, command=rowResizeA)
+    rowSelectA.place(x=65, y=405, in_=master)
+
+    global colSelectA
+    colSelectA = OptionMenu(master, colA, *DIMENSIONS, command=columnResizeA)
+    colSelectA.place(x=65, y=433, in_=master)
+
+    bRowLabel = Label(master, text="B rows: ")
+    bRowLabel.place(x=347, y=410)
+
+    bColLabel = Label(master, text="B columns: ")
+    bColLabel.place(x=347, y=437)
+
+    global rowSelectB
+    rowSelectB = OptionMenu(master, rowB, *DIMENSIONS, command=rowResizeB)
+    rowSelectB.place(x=412, y=405, in_=master)
+    # rowSelectB.config(state=DISABLED)
+
+    global colSelectB
+    colSelectB = OptionMenu(master, colB, *DIMENSIONS, command=columnResizeB)
+    colSelectB.place(x=412, y=433, in_=master)
+    # columnSelectB.config(state=DISABLED)
+
     matrixReductionSetup()
 # end UISetup()
 
 
 def cleanUI():
-    for e in UIElements:
-        e.destroy()
     clearMatrix(matrixA)
     clearMatrix(matrixB)
     clearMatrix(solutionMatrix)
@@ -152,11 +210,7 @@ def cleanUI():
 
 def buildMatrix(x, y, originX, originY):
     # print("building matrix...")
-
     m = []
-
-    offsetX = originX - (x / 2 * cellSize)
-    offsetY = originY - (y / 2 * cellSize)
 
     # build matrix...
     for i in range(0, y):
@@ -164,8 +218,8 @@ def buildMatrix(x, y, originX, originY):
         for j in range(0, x):
             c = Entry(master, width=4)
             # calculate offset...
-            cellX = offsetX + cellSize * j
-            cellY = offsetY + cellSize * i
+            cellX = originX + (cellSize * j)
+            cellY = originY + (cellSize * i)
             c.place(x=cellX, y=cellY, in_=master)
             c.insert(0, "0")
             row.append(c)
@@ -195,8 +249,8 @@ def rowResizeA(x):
     clearMatrix(matrixA)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
+    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end rowResize()
 
 
@@ -210,8 +264,8 @@ def columnResizeA(y):
     clearMatrix(matrixA)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
+    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end columnResize()
 
 
@@ -225,8 +279,8 @@ def rowResizeB(x):
     clearMatrix(matrixB)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(b_x, b_y, screen25x, screen50y)
-    solutionMatrix = buildMatrix(b_x, b_y, screen75x, screen50y)
+    matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
+    solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
 # end rowResize()
 
 
@@ -240,9 +294,21 @@ def columnResizeB(y):
     clearMatrix(matrixB)
     clearMatrix(solutionMatrix)
 
-    matrixA = buildMatrix(b_x, b_y, screen25x, screen50y)
-    solutionMatrix = buildMatrix(b_x, b_y, screen75x, screen50y)
+    matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
+    solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
 # end columnResize()
+
+
+def solveMatrix():
+    if mode == "Reduction":
+        reduceMatrix()
+    elif mode == "Multiplication":
+        multiplyMatrix()
+    elif mode == "Addition":
+        pass
+    elif mode == "Subtraction":
+        pass
+# end solveMatrix()
 
 
 def reduceMatrix():
@@ -250,20 +316,22 @@ def reduceMatrix():
     displaySolution(solution)
 # end reduceMatrix
 
+
 def multiplyMatrix():
     solution = multiply(matrixA, matrixB)
     displaySolution(solution)
 # end multiplyMatrix()
 
+
 def displaySolution(solution):
     numRows = len(solution)
 
-    if(numRows <= 0):
+    if (numRows <= 0):
         return
 
     numColumns = len(solution[0])
 
-    for i in range (0, numRows):
+    for i in range(0, numRows):
         row = solutionMatrix[i]
         r = solution[i]
         for j in range(0, numColumns):
@@ -283,122 +351,27 @@ def matrixAdditionSetup():
 
 
 def matrixMultiplicationSetup():
-    # build matrix A, B, and solution matrix.
-
-    rowVar = StringVar()
-    rowVar.set("2")
-    columnVar = StringVar()
-    columnVar.set("2")
-
-    # MATRIX A
-    rowSelect_a = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect_a.place(x=(screen16x - 60), y=500, in_=master)
-
-    columnSelect_a = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect_a.place(x=(screen16x + 5), y=500, in_=master)
-
-    # dimensions 'x' label for matrix a
-    xLabel_a = Label(master, text="x")
-    xLabel_a.place(x=(screen16x - 5), y=504, in_=master)
-
-    # dimensions label...
-    dimensionsLabel_a = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel_a.place(x=(screen16x - 55), y=480, in_=master)
-
-    # MATRIX B
-    rowSelect_b = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeB)
-    rowSelect_b.place(x=(screen50x - 60), y=500, in_=master)
-
-    columnSelect_b = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeB)
-    columnSelect_b.place(x=(screen50x + 5), y=500, in_=master)
-
-    # dimensions 'x' label for matrix b
-    xLabel_b = Label(master, text="x")
-    xLabel_b.place(x=screen50x -5, y=504, in_=master)
-
-    # dimensions label...
-    dimensionsLabel_b = Label(master, text="Matrix B Dimensions:")
-    dimensionsLabel_b.place(x=(screen50x - 55), y=480, in_=master)
-
-    # SOLUTION ELEMENTS
-    # solution label...
-    solutionLabel = Label(master, text="Solution matrix")
-    solutionLabel.place(x=(screen83x - 50), y=480, in_=master)
-
-    # 'multiply' button
-    solveButton = Button(master, text="Multiply", command=multiplyMatrix)
-    solveButton.place(x=(screen50x + 200), y=502, in_=master)
-
-    # put all these UI elements in a list so they can be removed later...
-    global UIElements
-    UIElements.append(dimensionsLabel_a)
-    UIElements.append(rowSelect_a)
-    UIElements.append(columnSelect_a)
-    UIElements.append(xLabel_a)
-    UIElements.append(dimensionsLabel_b)
-    UIElements.append(rowSelect_b)
-    UIElements.append(columnSelect_b)
-    UIElements.append(xLabel_b)
-    UIElements.append(solutionLabel)
-    UIElements.append(solveButton)
-
-    # permission to access global variables
-    global matrixA
-    global matrixB
-    global solutionMatrix
-
-    matrixA = buildMatrix(a_x, a_y, screen16x, screen50y)
-    matrixB = buildMatrix(b_x, b_y, screen50x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen83x, screen50y)
+    pass
 # end matrixMultiplicationSetup()
 
 
 def matrixReductionSetup():
     # print("setting up matrix reduction...")
-
-    rowVar = StringVar()
-    rowVar.set("2")
-    columnVar = StringVar()
-    columnVar.set("2")
-
-    rowSelect = OptionMenu(master, rowVar, *DIMENSIONS, command=rowResizeA)
-    rowSelect.place(x=(screen25x - 65), y=500, in_=master)
-
-    columnSelect = OptionMenu(master, columnVar, *DIMENSIONS, command=columnResizeA)
-    columnSelect.place(x=(screen25x + 10), y=500, in_=master)
-
-    # dimensions 'x' label
-    xLabel = Label(master, text="x")
-    xLabel.place(x=(screen25x - 8), y=504, in_=master)
-
-    # dimensions label...
-    dimensionsLabel = Label(master, text="Matrix A Dimensions:")
-    dimensionsLabel.place(x=(screen25x - 60), y=480, in_=master)
-
-    # solution label...
-    solutionLabel = Label(master, text="Solution matrix")
-    solutionLabel.place(x=(screen75x - 50), y=480, in_=master)
-
-    # 'Reduce' button
-    solveButton = Button(master, text="Reduce", command=reduceMatrix)
-    solveButton.place(x=(screen50x - 25), y=502, in_=master)
-
-    # put all these UI elements in a list so they can be removed later...
-    global UIElements
-    UIElements.append(dimensionsLabel)
-    UIElements.append(rowSelect)
-    UIElements.append(columnSelect)
-    UIElements.append(xLabel)
-    UIElements.append(solutionLabel)
-    UIElements.append(solveButton)
-
-    # permission to access global variables
     global matrixA
+    global matrixB
     global solutionMatrix
+    # matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
 
-    matrixA = buildMatrix(a_x, a_y, screen25x, screen50y)
-    solutionMatrix = buildMatrix(a_x, a_y, screen75x, screen50y)
-    # print("done!")
+    global rowSelectB
+    global colSelectB
+
+    rowSelectB.config(state=DISABLED)
+    colSelectB.config(state=DISABLED)
+
+    clearMatrix(matrixB)
+
+    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end matrixReductionSetup()
 
 
@@ -408,9 +381,6 @@ def main():
 
     setGlobals()
     UISetup()
-
-    # modeSwap("Multiplication")
-
     mainloop()
 # end main()
 

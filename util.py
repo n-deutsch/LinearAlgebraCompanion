@@ -64,7 +64,7 @@ def roundDecimals(matrix, numDecimalPlaces):
 # end roundDecimals()
 
 # returns TRUE if a has the same # of columns and rows as b
-def check_equal_dimensions(matrix_a, matrix_b):
+def checkEqualDimensions(matrix_a, matrix_b):
     # get A's dimensions
     rows_a = len(matrix_a)
     if rows_a > 0:

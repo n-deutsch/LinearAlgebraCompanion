@@ -208,25 +208,25 @@ def testMatrixAddition():
         [0, 0, 0]
     ]
 
-    test1 = add(test1_a, test1_b)
+    test1 = matrixAddition(test1_a, test1_b)
     output = assertEqual(test1, solution1)
     if not output:
         print("test1 failed")
         return False
 
-    test2 = add(test2_a, test2_b)
+    test2 = matrixAddition(test2_a, test2_b)
     output = assertEqual(test2, solution2)
     if not output:
         print("test2 failed")
         return False
 
-    test3 = add(test3_a, test3_b)
+    test3 = matrixAddition(test3_a, test3_b)
     output = assertEqual(test3, solution3)
     if not output:
         print("test3 failed")
         return False
 
-    test4 = add(test4_a, test4_b)
+    test4 = matrixAddition(test4_a, test4_b)
     output = assertEqual(test4, solution4)
     if not output:
         print("test4 failed")
@@ -302,25 +302,25 @@ def testMatrixSubtraction():
         [6, 6, 6]
     ]
 
-    test1 = subtract(test1_a, test1_b)
+    test1 = matrixSubtraction(test1_a, test1_b)
     output = assertEqual(test1, solution1)
     if not output:
         print("test1 failed")
         return False
 
-    test2 = subtract(test2_a, test2_b)
+    test2 = matrixSubtraction(test2_a, test2_b)
     output = assertEqual(test2, solution2)
     if not output:
         print("test2 failed")
         return False
 
-    test3 = subtract(test3_a, test3_b)
+    test3 = matrixSubtraction(test3_a, test3_b)
     output = assertEqual(test3, solution3)
     if not output:
         print("test3 failed")
         return False
 
-    test4 = subtract(test4_a, test4_b)
+    test4 = matrixSubtraction(test4_a, test4_b)
     output = assertEqual(test4, solution4)
     if not output:
         print("test4 failed")

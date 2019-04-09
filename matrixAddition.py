@@ -1,8 +1,18 @@
 from util import *
 
+
+def add(m_a, m_b):
+    matrix_a = copyMatrix(m_a)
+    matrix_b = copyMatrix(m_b)
+
+    solution = matrixAddition(matrix_a, matrix_b)
+    return solution
+# end add()
+
+
 # returns the sum of two matricies
-def add(matrix_a, matrix_b):
-    if not check_equal_dimensions(matrix_a, matrix_b):
+def matrixAddition(matrix_a, matrix_b):
+    if not checkEqualDimensions(matrix_a, matrix_b):
         return []
 
     solution = []
@@ -19,4 +29,4 @@ def add(matrix_a, matrix_b):
         solution.append(solution_row)
 
     return solution
-#end add()
+#end matrixAddition()

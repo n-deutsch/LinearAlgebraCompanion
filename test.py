@@ -380,7 +380,7 @@ def testMatrixMultiplication():
         [35, 46, 57, 68]
     ]
 
-    #test case 4 - zero matrix
+    # test case 4 - zero matrix
     test4_a = [
         [0, 0],
         [0, 0]

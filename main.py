@@ -115,9 +115,18 @@ def reset_matricies():
     global s_y
     a_x = a_y = b_x = b_y = s_x = s_y = 2
 
+    rowA.set("2")
+    colA.set("2")
+    rowB.set("2")
+    colB.set("2")
+
     global matrixA
     global matrixB
     global solutionMatrix
+
+    clearMatrix(matrixA)
+    clearMatrix(matrixB)
+    clearMatrix(solutionMatrix)
 
     matrixA = matrixB = solutionMatrix = []
 # end set_default_matrix_dimensions()
@@ -127,7 +136,7 @@ def modeSwap(x):
     mode = x
 
     # cleanUI()
-    # reset_matricies()
+    reset_matricies()
 
     if x == "Reduction":
         matrixReductionSetup()
@@ -209,10 +218,8 @@ def cleanUI():
 # end cleanUI()
 
 def buildMatrix(x, y, originX, originY):
-    # print("building matrix...")
     m = []
 
-    # build matrix...
     for i in range(0, y):
         row = []
         for j in range(0, x):
@@ -229,74 +236,274 @@ def buildMatrix(x, y, originX, originY):
 # end buildMatrix()
 
 
-def clearMatrix(m):
+def clearMatrix(matrix):
     # remove all UI elements in matrix
-    for r in m:
-        for c in r:
-            c.destroy()
+    for row in matrix:
+        for cell in row:
+            cell.destroy()
     # matrix is now an empty list
     m = []
 # end clearMatrix
 
 
-def rowResizeA(x):
+def rowResizeA(resize):
     # global keyword lets us change global variables
     global matrixA
-    global solutionMatrix
-    global a_y
-
-    a_y = int(x)
-    clearMatrix(matrixA)
-    clearMatrix(solutionMatrix)
-
-    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
-    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
-# end rowResize()
-
-
-def columnResizeA(y):
-    # global keyword lets us change global variables
-    global matrixA
-    global solutionMatrix
-    global a_x
-
-    a_x = int(y)
-    clearMatrix(matrixA)
-    clearMatrix(solutionMatrix)
-
-    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
-    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
-# end columnResize()
-
-
-def rowResizeB(x):
-    # global keyword lets us change global variables
     global matrixB
     global solutionMatrix
+
+    global a_x
+    global b_x
+    global a_y
     global b_y
 
-    b_y = int(x)
-    clearMatrix(matrixB)
-    clearMatrix(solutionMatrix)
+    a_y = int(resize)
 
-    matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
-    solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+    oldMatrixA = copyMatrix(matrixA)
+    oldMatrixB = copyMatrix(matrixB)
+
+    if mode == "Reduction":
+        clearMatrix(matrixA)
+        clearMatrix(solutionMatrix)
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
+
+        restore(matrixA, oldMatrixA)
+    elif mode == "Multiplication":
+        clearMatrix(matrixA)
+        # clearMatrix(matrixB)
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        # matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(a_y, b_x, originS_x, originS_y)
+
+        # rowB.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        # restore(matrixB, oldMatrixB)
+    elif mode == "Addition" or mode == "Subtraction":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
+
+        b_y = a_y
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        matrixB = buildMatrix(a_x, a_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
+
+        rowB.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    # clearMatrix(matrixA)
+    # clearMatrix(solutionMatrix)
+
+    # matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    # solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end rowResize()
 
 
-def columnResizeB(y):
+def columnResizeA(resize):
     # global keyword lets us change global variables
+    global matrixA
     global matrixB
     global solutionMatrix
+
+    global a_x
     global b_x
+    global a_y
+    global b_y
 
-    b_x = int(y)
-    clearMatrix(matrixB)
-    clearMatrix(solutionMatrix)
+    a_x = int(resize)
 
-    matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
-    solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+
+    oldMatrixA = copyMatrix(matrixA)
+    oldMatrixB = copyMatrix(matrixB)
+
+    if mode == "Reduction":
+        clearMatrix(matrixA)
+        clearMatrix(solutionMatrix)
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
+
+        restore(matrixA, oldMatrixA)
+    elif mode == "Multiplication":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+
+        b_y = a_x
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        # solutionMatrix = buildMatrix(a_y, b_x, originS_x, originS_y)
+
+        rowB.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    elif mode == "Addition" or mode == "Subtraction":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
+
+        b_x = a_x
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        matrixB = buildMatrix(a_x, a_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
+
+        colB.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+
+
+    # clearMatrix(matrixA)
+    # clearMatrix(solutionMatrix)
+
+    # matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    # solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end columnResize()
+
+
+def rowResizeB(resize):
+    # global keyword lets us change global variables
+    global matrixA
+    global matrixB
+    global solutionMatrix
+
+    global a_x
+    global b_x
+    global a_y
+    global b_y
+
+    oldMatrixA = copyMatrix(matrixA)
+    oldMatrixB = copyMatrix(matrixB)
+
+    b_y = int(resize)
+
+    # B controls are disabled for matrix reduction
+    # if mode == "Reduction":
+    #    pass
+    if mode == "Multiplication":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+
+        a_x = b_y
+
+        matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+        matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        # solutionMatrix = buildMatrix(a_x, b_y, originS_x, originS_y)
+
+        colA.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    elif mode == "Addition" or mode == "Subtraction":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
+
+        a_y = b_y
+
+        matrixA = buildMatrix(b_x, b_y, originA_x, originA_y)
+        matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+
+        rowA.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    # clearMatrix(matrixB)
+    # clearMatrix(solutionMatrix)
+
+    # matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
+    # solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+# end rowResize()
+
+
+def columnResizeB(resize):
+    # global keyword lets us change global variables
+    global matrixA
+    global matrixB
+    global solutionMatrix
+
+    global a_x
+    global b_x
+    global a_y
+    global b_y
+
+    oldMatrixA = copyMatrix(matrixA)
+    oldMatrixB = copyMatrix(matrixB)
+
+    b_x = int(resize)
+
+    # B controls are disabled for matrix reduction
+    # if mode == "Reduction":
+    #    pass
+    if mode == "Multiplication":
+        # clearMatrix(matrixA)
+        clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
+
+        # matrixA = buildMatrix(a_x, b_x, originA_x, originA_y)
+        matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(a_y, b_x, originS_x, originS_y)
+
+        # colA.set(resize)
+
+        # restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    elif mode == "Addition" or mode == "Subtraction":
+        clearMatrix(matrixA)
+        clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
+
+        a_x = b_x
+
+        matrixA = buildMatrix(b_x, b_y, originA_x, originA_y)
+        matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+        solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+
+        colA.set(resize)
+
+        restore(matrixA, oldMatrixA)
+        restore(matrixB, oldMatrixB)
+    # clearMatrix(matrixB)
+    # clearMatrix(solutionMatrix)
+
+    # matrixA = buildMatrix(b_x, b_y, originB_x, originB_y)
+    # solutionMatrix = buildMatrix(b_x, b_y, originS_x, originS_y)
+# end columnResize()
+
+
+def restore(newMatrix, oldMatrix):
+    newRows = len(newMatrix)
+    oldRows = len(oldMatrix)
+
+    if newRows > 0:
+        newCols = len(newMatrix[0])
+    else:
+        pass
+
+    if oldRows > 0:
+        oldCols = len(oldMatrix[0])
+    else:
+        oldCols = 0
+
+    for i in range(newRows):
+        newRow = newMatrix[i]
+
+        for j in range(newCols):
+            if i < oldRows and j < oldCols:
+                oldRow = oldMatrix[i]
+                oldCell = oldRow[j]
+                oldCell = round(oldCell, 0)
+                newRow[j].insert(0, oldCell)
+# end restore()
 
 
 def solveMatrix():
@@ -305,9 +512,9 @@ def solveMatrix():
     elif mode == "Multiplication":
         multiplyMatrix()
     elif mode == "Addition":
-        pass
+        addMatrix()
     elif mode == "Subtraction":
-        pass
+        subtractMatrix()
 # end solveMatrix()
 
 
@@ -323,10 +530,21 @@ def multiplyMatrix():
 # end multiplyMatrix()
 
 
+def addMatrix():
+    solution = add(matrixA, matrixB)
+    displaySolution(solution)
+# end addMatrix()
+
+
+def subtractMatrix():
+    solution = subtract(matrixA, matrixB)
+    displaySolution(solution)
+# end subtractMatrix
+
+
 def displaySolution(solution):
     numRows = len(solution)
-
-    if (numRows <= 0):
+    if numRows <= 0:
         return
 
     numColumns = len(solution[0])
@@ -341,26 +559,38 @@ def displaySolution(solution):
 
 
 def matrixSubtractionSetup():
-    pass
+    # recycles the exact same logic as matrix multiplication
+    matrixMultiplicationSetup()
 # end matrixSubtractionSetup()
 
 
 def matrixAdditionSetup():
-    pass
+    # recycles the exact same logic as matrix multiplication
+    matrixMultiplicationSetup()
 # end matrixAdditionSetup()
 
 
 def matrixMultiplicationSetup():
-    pass
+    global matrixA
+    global matrixB
+    global solutionMatrix
+
+    global rowSelectB
+    global colSelectB
+
+    rowSelectB.config(state=NORMAL)
+    colSelectB.config(state=NORMAL)
+
+    matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
+    matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)
+    solutionMatrix = buildMatrix(a_x, a_y, originS_x, originS_y)
 # end matrixMultiplicationSetup()
 
 
 def matrixReductionSetup():
-    # print("setting up matrix reduction...")
     global matrixA
     global matrixB
     global solutionMatrix
-    # matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
 
     global rowSelectB
     global colSelectB

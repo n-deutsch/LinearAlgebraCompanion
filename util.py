@@ -13,12 +13,18 @@ def copyMatrix(m):
         row = []
         for j in range(0, numColumns):
             val = r[j].get()
-            val = float(val)
+
+            try:
+                val = float(val)
+            except ValueError:
+                val = 0
+
             row.append(val)
         matrix.append(row)
 
     return matrix
 # end copyMatrix
+
 
 def assertEqual(matrix1, matrix2):
     numRows = len(matrix1)
@@ -47,6 +53,7 @@ def assertEqual(matrix1, matrix2):
     return True
 # end assertEqual()
 
+
 # round all values to 3 decimal places, otherwise we get lots of 0.0000000001 values
 def roundDecimals(matrix, numDecimalPlaces):
     numRows = len(matrix)
@@ -62,6 +69,7 @@ def roundDecimals(matrix, numDecimalPlaces):
 
     return matrix
 # end roundDecimals()
+
 
 # returns TRUE if a has the same # of columns and rows as b
 def checkEqualDimensions(matrix_a, matrix_b):

@@ -273,6 +273,7 @@ def rowResizeA(resize):
     elif mode == "Multiplication":
         clearMatrix(matrixA)
         # clearMatrix(matrixB)
+        clearMatrix(solutionMatrix)
 
         matrixA = buildMatrix(a_x, a_y, originA_x, originA_y)
         # matrixB = buildMatrix(b_x, b_y, originB_x, originB_y)

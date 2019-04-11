@@ -1,6 +1,7 @@
 from util import *
 
 
+# driver function for matrixSubtraction()
 def subtract(m_a, m_b):
     matrix_a = copyMatrix(m_a)
     matrix_b = copyMatrix(m_b)
@@ -10,7 +11,7 @@ def subtract(m_a, m_b):
 # end subtract()
 
 
-# returns the difference between two matricies
+# returns the difference between two matrices
 def matrixSubtraction(matrix_a, matrix_b):
     if not checkEqualDimensions(matrix_a, matrix_b):
         return []

@@ -1,6 +1,7 @@
 from util import *
 
 
+# driver function for matrixAddition()
 def add(m_a, m_b):
     matrix_a = copyMatrix(m_a)
     matrix_b = copyMatrix(m_b)
@@ -10,7 +11,7 @@ def add(m_a, m_b):
 # end add()
 
 
-# returns the sum of two matricies
+# returns the sum of two matrices
 def matrixAddition(matrix_a, matrix_b):
     if not checkEqualDimensions(matrix_a, matrix_b):
         return []

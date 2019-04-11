@@ -1,3 +1,4 @@
+# copyMatrix() converts a matrix containing tkinter.Entry to a matrix of floats
 def copyMatrix(m):
     numRows = len(m)
 
@@ -26,6 +27,7 @@ def copyMatrix(m):
 # end copyMatrix
 
 
+# returns FALSE if matrix1, matrix2 have different dimensions, or different values
 def assertEqual(matrix1, matrix2):
     numRows = len(matrix1)
 

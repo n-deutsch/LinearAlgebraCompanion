@@ -67,6 +67,8 @@ cellSize = 30
 
 mode = "Reduction"
 
+
+# called on program initialization, sets global variables to default values
 def setGlobals():
     # set up matrixA
     global matrixA
@@ -106,6 +108,8 @@ def setGlobals():
     UIElements = []
 # end setGlobals
 
+
+# resets all three matricies to empty lists with dimensions 2x2
 def reset_matricies():
     global a_x
     global a_y
@@ -131,6 +135,8 @@ def reset_matricies():
     matrixA = matrixB = solutionMatrix = []
 # end set_default_matrix_dimensions()
 
+
+# called when user selects a new mode
 def modeSwap(x):
     global mode
     mode = x
@@ -151,6 +157,7 @@ def modeSwap(x):
 # end modeSwap()
 
 
+# first time setup on program initialization, creates and places all static UI elements
 def UISetup():
     master.minsize(screenWidth, screenHeight)
     master.geometry("1000x500")
@@ -211,12 +218,15 @@ def UISetup():
 # end UISetup()
 
 
+# removes all matrices
 def cleanUI():
     clearMatrix(matrixA)
     clearMatrix(matrixB)
     clearMatrix(solutionMatrix)
 # end cleanUI()
 
+
+# returns a matrix filled with tkinter.Entry elements of size (x, y)
 def buildMatrix(x, y, originX, originY):
     m = []
 
@@ -236,6 +246,7 @@ def buildMatrix(x, y, originX, originY):
 # end buildMatrix()
 
 
+# destroys Entry elements we don't need any more, returns empty matrix
 def clearMatrix(matrix):
     # remove all UI elements in matrix
     for row in matrix:
@@ -246,6 +257,7 @@ def clearMatrix(matrix):
 # end clearMatrix
 
 
+# called when user selects a new value for matrix A's rows
 def rowResizeA(resize):
     # global keyword lets us change global variables
     global matrixA
@@ -306,6 +318,7 @@ def rowResizeA(resize):
 # end rowResize()
 
 
+# called when user selects a new value for matrix A's columns
 def columnResizeA(resize):
     # global keyword lets us change global variables
     global matrixA
@@ -370,6 +383,7 @@ def columnResizeA(resize):
 # end columnResize()
 
 
+# called when user selects a new value for matrix B's rows
 def rowResizeB(resize):
     # global keyword lets us change global variables
     global matrixA
@@ -426,6 +440,7 @@ def rowResizeB(resize):
 # end rowResize()
 
 
+# called when user picks a new value for matrix B's columns
 def columnResizeB(resize):
     # global keyword lets us change global variables
     global matrixA
@@ -481,6 +496,7 @@ def columnResizeB(resize):
 # end columnResize()
 
 
+# populates newMatrix with oldMatrix's values. Called after row/column resize.
 def restore(newMatrix, oldMatrix):
     newRows = len(newMatrix)
     oldRows = len(oldMatrix)
@@ -507,6 +523,7 @@ def restore(newMatrix, oldMatrix):
 # end restore()
 
 
+# calls the appropriate function based on global 'mode' variable. Called when 'solve' is pressed
 def solveMatrix():
     if mode == "Reduction":
         reduceMatrix()
@@ -519,30 +536,35 @@ def solveMatrix():
 # end solveMatrix()
 
 
+# calls reduce method - self explanatory
 def reduceMatrix():
     solution = reduce(matrixA)
     displaySolution(solution)
 # end reduceMatrix
 
 
+# calls multiply method - self explanatory
 def multiplyMatrix():
     solution = multiply(matrixA, matrixB)
     displaySolution(solution)
 # end multiplyMatrix()
 
 
+# calls add method - self explanatory
 def addMatrix():
     solution = add(matrixA, matrixB)
     displaySolution(solution)
 # end addMatrix()
 
 
+# calls subtract method - self explanatory
 def subtractMatrix():
     solution = subtract(matrixA, matrixB)
     displaySolution(solution)
 # end subtractMatrix
 
 
+# copies a matrix of floats into the solution matrix made of tkinter.Entry elements
 def displaySolution(solution):
     numRows = len(solution)
     if numRows <= 0:
@@ -559,18 +581,20 @@ def displaySolution(solution):
 # end displaySolution()
 
 
+# calls matrixMultiplicationSetup() -there's no reason to copy/paste code
 def matrixSubtractionSetup():
     # recycles the exact same logic as matrix multiplication
     matrixMultiplicationSetup()
 # end matrixSubtractionSetup()
 
 
+# calls matrixMultiplicationSetup -there's no reason to copy/paste code
 def matrixAdditionSetup():
     # recycles the exact same logic as matrix multiplication
     matrixMultiplicationSetup()
 # end matrixAdditionSetup()
 
-
+# enables matrix B controls, sets up UI for matrix multiplication, addition, and subtraction
 def matrixMultiplicationSetup():
     global matrixA
     global matrixB
@@ -588,6 +612,7 @@ def matrixMultiplicationSetup():
 # end matrixMultiplicationSetup()
 
 
+# disables matrix B controls, sets up UI for matrix reduction
 def matrixReductionSetup():
     global matrixA
     global matrixB
@@ -606,6 +631,7 @@ def matrixReductionSetup():
 # end matrixReductionSetup()
 
 
+# entry point
 def main():
     if testing:
         test()
@@ -616,6 +642,7 @@ def main():
 # end main()
 
 
+# driver function for integrationTest()
 def test():
     if integrationTest():
         print("All tests OK!")

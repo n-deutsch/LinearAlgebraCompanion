@@ -4,6 +4,8 @@ from matrixMultiplication import *
 from matrixSubtraction import *
 from matrixAddition import *
 
+
+# tests every mathematical function one at a time
 def integrationTest():
     if not testMatrixReduction():
         print("matrix reduction failed")
@@ -24,6 +26,8 @@ def integrationTest():
     return True
 # end integrationTest()
 
+
+# unit test for matrix reduction
 def testMatrixReduction():
     print("testing matrix reduction...")
 
@@ -101,37 +105,37 @@ def testMatrixReduction():
     test6 = []
     solution6 = []
 
-    test1 = rowReduce(test1)
+    test1 = matrixReduction(test1)
     output = assertEqual(test1, solution1)
     if not output:
         print("test1 failed")
         return False
 
-    test2 = rowReduce(test2)
+    test2 = matrixReduction(test2)
     output = assertEqual(test2, solution2)
     if not output:
         print("test2 failed")
         return False
 
-    test3 = rowReduce(test3)
+    test3 = matrixReduction(test3)
     output = assertEqual(test3, solution3)
     if not output:
         print("test3 failed")
         return False
 
-    test4 = rowReduce(test4)
+    test4 = matrixReduction(test4)
     output = assertEqual(test4, solution4)
     if not output:
         print("test4 failed")
         return False
 
-    test5 = rowReduce(test5)
+    test5 = matrixReduction(test5)
     output = assertEqual(test5, solution5)
     if not output:
         print("test5 failed")
         return False
 
-    test6 = rowReduce(test6)
+    test6 = matrixReduction(test6)
     output = assertEqual(test6, solution6)
     if not output:
         print("test6 failed")
@@ -141,6 +145,8 @@ def testMatrixReduction():
     return True
 # end testMatrixReduction()
 
+
+# unit test for matrix addition
 def testMatrixAddition():
     print("testing matrix addition...")
 
@@ -235,6 +241,8 @@ def testMatrixAddition():
     return True
 # end testMatrixAddition()
 
+
+# unit test for matrix subtraction
 def testMatrixSubtraction():
     print("testing matrix subtraction...")
 
@@ -329,6 +337,8 @@ def testMatrixSubtraction():
     return True
 # end testMatrixSubtraction()
 
+
+# unit test for matrix multiplication
 def testMatrixMultiplication():
     print("testing matrix multiplication...")
 

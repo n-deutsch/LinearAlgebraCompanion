@@ -1,13 +1,16 @@
 from util import *
 
+
+# driver function for matrixReduction()
 def reduce(m):
     matrix = copyMatrix(m)
-    solution = rowReduce(matrix)
+    solution = matrixReduction(matrix)
     return solution
 # end reduce()
 
-# converts a matrix to echelon form
-def rowReduce(matrix):
+
+# returns input matrix in reduced echelon form
+def matrixReduction(matrix):
     numRows = len(matrix)
 
     # don't process if it's empty
@@ -31,6 +34,7 @@ def rowReduce(matrix):
             for r in range(submatrixRow, numRows):
                 tempRow = matrix[r]
                 if tempRow[submatrixColumn] != 0:
+                    # swap rows
                     matrix[r] = matrix[submatrixRow]
                     matrix[submatrixRow] = tempRow
                     row = matrix[submatrixRow]
@@ -59,7 +63,8 @@ def rowReduce(matrix):
             for j in range(submatrixColumn, numColumns):
                 rowSubtraction[j] = rowSubtraction[j] - (factor * row[j])
 
-        submatrixRow = submatrixRow + 1  # shrink submatrix!
+        # shrink submatrix
+        submatrixRow = submatrixRow + 1  # shrink submatrix
         # end master loop!
 
     # round to three decimal places

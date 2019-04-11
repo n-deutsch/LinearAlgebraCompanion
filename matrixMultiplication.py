@@ -1,6 +1,7 @@
 from util import *
 
 
+# driver function for matrixMultiplication
 def multiply(m_a, m_b):
     matrix_a = copyMatrix(m_a)
     matrix_b = copyMatrix(m_b)
@@ -9,6 +10,8 @@ def multiply(m_a, m_b):
     return solution
 # end matrixMultiply()
 
+
+# returns the product of two matrices
 def matrixMultiplication(matrix_a, matrix_b):
     # ensure matrix_a has the same number of columns as matrix_b has rows
     if not check_dimensions_multiplication(matrix_a, matrix_b):
@@ -39,6 +42,7 @@ def matrixMultiplication(matrix_a, matrix_b):
     return solution
 # end multiply()
 
+
 # checkDimensions return TRUE if matrix A has the same number of columns as matrix B has rows
 def check_dimensions_multiplication(matrix_a, matrix_b):
     # get number of columns in matrix a
@@ -56,7 +60,8 @@ def check_dimensions_multiplication(matrix_a, matrix_b):
     return False
 # end checkDimensions
 
-# multiply_vectors exists to
+
+# returns the product of two vectors
 def multiply_vectors(row_a, col_b):
     # rows should be the same length
     if len(row_a) != len(col_b):

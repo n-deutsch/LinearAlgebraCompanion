@@ -11,6 +11,8 @@ def add(m_a, m_b):
 # end add()
 
 
+# here's a third change just for kicks
+
 # returns the sum of two matrices
 def matrixAddition(matrix_a, matrix_b):
     if not checkEqualDimensions(matrix_a, matrix_b):
